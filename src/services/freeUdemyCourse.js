@@ -21,6 +21,7 @@ async function startFreeUdemyCourse(client) {
     const previousMessageTopicId = parseInt(previousMessage.content.split('/').slice(-1))
     const isNewTopic = previousMessageTopicId != latestTopic.id
 
+    console.log(`prev course id: ${previousMessageTopicId}  latest topic id: ${latestTopic.id}`)
     if (!isNewTopic) return console.log('There is no new free course\n')
 
     sendLatestTopic(channel, latestTopic)
@@ -31,7 +32,7 @@ async function getLatestTopic() {
   try {
     const res = await axios.get(URL)
     const allTopics = res.data.topic_list.topics
-    const freeCourseTopics = allTopics.filter(topic => topic.title.includes('free'))
+    const freeCourseTopics = allTopics.filter(topic => topic.title.toLowerCase().includes('free'))
     const latestTopic = freeCourseTopics[0]
     return latestTopic
 
